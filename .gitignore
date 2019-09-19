@@ -50,3 +50,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Database files
+*.csv
+
+# VS Code files
+.vscode/
