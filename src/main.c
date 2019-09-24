@@ -1,13 +1,27 @@
 #include <locale.h>
 #include "ContactAdd.h"
+#include "ContactDelete.h"
+#include "ContactModify.h"
 #include "ContactSearch.h"
 
-enum SWITCH { LOOP_SEARCH = 1, LOOP_ADD, LOOP_EDIT, LOOP_DELETE, LOOP_QUIT };
+enum SWITCH {
+  LOOP_SEARCH = 1,
+  LOOP_INSERT,
+  LOOP_UPDATE,
+  LOOP_DELETE,
+  LOOP_QUIT
+};
 
-void MainLoop(FILE *f) {
+void MainLoop() {
+  const char *filename = "2012007729_우한샘.csv";
   char buf[1024];
-  bool loop = true;
+  Contact *c = (Contact *)malloc(sizeof(Contact));
+  if (!Contact_Init(c, filename)) {
+    puts("구조체 생성 오류!");
+    return;
+  }
 
+  bool loop = true;
   while (loop) {
     puts("======= 연락처 프로그램 =======");
     puts("1. 연락처 검색");
@@ -23,14 +37,16 @@ void MainLoop(FILE *f) {
 
     switch (sw) {
       case LOOP_SEARCH:
-        ContactSearch(f);
+        c->ContactSearch(c);
         break;
-      case LOOP_ADD:
-        ContactAdd(f);
+      case LOOP_INSERT:
+        c->ContactInsert(c);
         break;
-      case LOOP_EDIT:
+      case LOOP_UPDATE:
+        c->ContactUpdate(c);
         break;
       case LOOP_DELETE:
+        c->ContactDelete(c);
         break;
       case LOOP_QUIT:
         loop = false;
@@ -45,14 +61,6 @@ int main() {
   // 프로그램의 locale을 한국어/UTF-8 인코딩으로 지정
   setlocale(LC_CTYPE, "ko_KR.UTF.8");
 
-  FILE *f = fopen("2012007729_Hansaem_Woo.csv", "r+");
-  if (!f) {
-    perror("Failed to open the file");
-    return EXIT_FAILURE;
-  }
-
-  MainLoop(f);
-
-  fclose(f);
+  MainLoop();
   return 0;
 }
