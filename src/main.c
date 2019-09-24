@@ -1,8 +1,5 @@
 #include <locale.h>
-#include "ContactAdd.h"
-#include "ContactDelete.h"
-#include "ContactModify.h"
-#include "ContactSearch.h"
+#include "Contact.h"
 
 enum SWITCH {
   LOOP_SEARCH = 1,
